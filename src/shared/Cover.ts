@@ -62,8 +62,9 @@ export default class Cover extends IDObject implements CoverAttributesSchema {
     updatedAt: Date;
     /**
      * Url to this cover's image
+     * Can be null because of undefined manga
      */
-    url: string;
+    url: string | null;
     /**
      * Relationship to the manga this cover belongs to
      */
@@ -84,7 +85,7 @@ export default class Cover extends IDObject implements CoverAttributesSchema {
         this.createdAt = new Date(schem.attributes.createdAt);
         this.updatedAt = new Date(schem.attributes.updatedAt);
         this.manga = Relationship.convertType<Manga>('manga', schem.relationships).pop()!;
-        this.url = `https://mangadex.org/covers/${this.manga.id}/${this.fileName}`;
+        this.url = this.manga ? `https://mangadex.org/covers/${this.manga.id}/${this.fileName}` : null;
         this.uploader = Relationship.convertType<User>('user', schem.relationships).pop()!;
     }
 
